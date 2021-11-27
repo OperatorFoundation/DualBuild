@@ -45,7 +45,7 @@ public struct DualBuildController {
             print("🛑 Error: could not trim working directory 🛑")
             return
         }
-        ssh.remote(command: "cd \(finalPath)\(current); export PATH=\"/root/swift/usr/bin:$PATH\"; swift --version; swift build")
+        ssh.remote(command: "cd \(finalPath)\(current); export PATH=\"/root/swift/usr/bin:$PATH\"; swift build")
     }
     
     func goBuildMacOS() {

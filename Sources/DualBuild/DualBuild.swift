@@ -18,10 +18,10 @@ public struct DualBuildController {
         }
         
         if path != nil {
-            ssh.remote(command: "cd \(path!)")
+            ssh.remote(command: "cd \(path!); git clone \(url)")
+        } else {
+            ssh.remote(command: "git clone \(url)")
         }
-        
-        ssh.remote(command: "git clone \(url)")
     }
     
     func swiftBuildMacOS() {
@@ -45,8 +45,7 @@ public struct DualBuildController {
             print("🛑 Error: could not trim working directory 🛑")
             return
         }
-        ssh.remote(command: "cd \(finalPath)\(current)")
-        ssh.remote(command: "swift build")
+        ssh.remote(command: "cd \(finalPath)\(current); swift build")
     }
     
     func goBuildMacOS() {
@@ -70,8 +69,7 @@ public struct DualBuildController {
             print("🛑 Error: could not trim working directory 🛑")
             return
         }
-        ssh.remote(command: "cd \(finalPath)\(current)")
-        ssh.remote(command: "go build")
+        ssh.remote(command: "cd \(finalPath)\(current); go build")
     }
     
     func xcodeBuildMacOS() {
@@ -95,7 +93,6 @@ public struct DualBuildController {
             print("🛑 Error: could not trim working directory 🛑")
             return
         }
-        ssh.remote(command: "cd \(finalPath)\(current)")
-        ssh.remote(command: "xcodebuild")
+        ssh.remote(command: "cd \(finalPath)\(current); xcodebuild")
     }
 }

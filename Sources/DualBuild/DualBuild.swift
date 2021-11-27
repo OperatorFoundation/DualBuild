@@ -16,13 +16,11 @@ public struct DualBuildController {
             print("🛑 Error: could not ssh into packet capture server 🛑")
             return
         }
-    var finalPath: String
+        
         if path != nil {
-            finalPath = path!
-        } else {
-            finalPath = homeDir
+            ssh.remote(command: "cd \(path!)")
         }
-        ssh.remote(command: "cd \(finalPath)")
+        
         ssh.remote(command: "git clone \(url)")
     }
     
@@ -39,15 +37,15 @@ public struct DualBuildController {
         }
     var finalPath: String
         if path != nil {
-            finalPath = path!
+            finalPath = "\(path!)/"
         } else {
-            finalPath = homeDir
+            finalPath = ""
         }
         guard let current = trimWorkingDirectory() else {
             print("🛑 Error: could not trim working directory 🛑")
             return
         }
-        ssh.remote(command: "cd \(finalPath)/\(current)")
+        ssh.remote(command: "cd \(finalPath)\(current)")
         ssh.remote(command: "swift build")
     }
     
@@ -64,15 +62,15 @@ public struct DualBuildController {
         }
     var finalPath: String
         if path != nil {
-            finalPath = path!
+            finalPath = "\(path!)/"
         } else {
-            finalPath = "~"
+            finalPath = ""
         }
         guard let current = trimWorkingDirectory() else {
             print("🛑 Error: could not trim working directory 🛑")
             return
         }
-        ssh.remote(command: "cd \(finalPath)/\(current)")
+        ssh.remote(command: "cd \(finalPath)\(current)")
         ssh.remote(command: "go build")
     }
     
@@ -89,15 +87,15 @@ public struct DualBuildController {
         }
     var finalPath: String
         if path != nil {
-            finalPath = path!
+            finalPath = "\(path!)/"
         } else {
-            finalPath = "~"
+            finalPath = ""
         }
         guard let current = trimWorkingDirectory() else {
             print("🛑 Error: could not trim working directory 🛑")
             return
         }
-        ssh.remote(command: "cd \(finalPath)/\(current)")
+        ssh.remote(command: "cd \(finalPath)\(current)")
         ssh.remote(command: "xcodebuild")
     }
 }

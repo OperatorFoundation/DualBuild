@@ -13,9 +13,9 @@ struct DualBuild: ParsableCommand
 {
     @Argument(help: "IP address for the system to build on.")
     var serverIP: String?
-    @Option(name: .short, help: "optional Github url to install on remote server")
+    @Option(name: .short, help: "(Optional) installs given github repo on remote server")
     var install: String?
-    @Option(name: .short, help: "path to the project directory on the remote server, EXCLUDING PROJECT NAME(defaults to ~)")
+    @Option(name: .short, help: "(Optional) path to the project directory on the remote server, EXCLUDING PROJECT NAME (defaults to ~)")
     var path: String?
     @Flag(help: "include if you wish to use xcodebuild in favor of swift build")
     var xcode = false
@@ -34,13 +34,13 @@ struct DualBuild: ParsableCommand
         
         // sets current settings as default if --setDefault is set
         if setDefault && serverIP != nil {
-            print("setting current settings as default")
+            print("🛠 setting current settings as default 🛠")
             setDefaultSettings(serverIP: serverIP!, path: path, xcode: xcode, go: go)
         }
         
         // if no flags are specified, loads default settings if available
         if serverIP == nil && path == nil && !xcode && !go {
-            print("checking for default settings")
+            print("🛠 checking for default settings 🛠")
             (self.serverIP, self.path, self.xcode, self.go) = loadDefaultSettings()
         }
 

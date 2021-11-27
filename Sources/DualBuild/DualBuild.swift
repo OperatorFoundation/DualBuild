@@ -43,7 +43,10 @@ public struct DualBuildController {
         } else {
             finalPath = homeDir
         }
-        let current = trimWorkingDirectory()
+        guard let current = trimWorkingDirectory() else {
+            print("🛑 Error: could not trim working directory 🛑")
+            return
+        }
         ssh.remote(command: "cd \(finalPath)/\(current)")
         ssh.remote(command: "swift build")
     }
@@ -65,7 +68,10 @@ public struct DualBuildController {
         } else {
             finalPath = "~"
         }
-        let current = trimWorkingDirectory()
+        guard let current = trimWorkingDirectory() else {
+            print("🛑 Error: could not trim working directory 🛑")
+            return
+        }
         ssh.remote(command: "cd \(finalPath)/\(current)")
         ssh.remote(command: "go build")
     }
@@ -87,7 +93,10 @@ public struct DualBuildController {
         } else {
             finalPath = "~"
         }
-        let current = trimWorkingDirectory()
+        guard let current = trimWorkingDirectory() else {
+            print("🛑 Error: could not trim working directory 🛑")
+            return
+        }
         ssh.remote(command: "cd \(finalPath)/\(current)")
         ssh.remote(command: "xcodebuild")
     }

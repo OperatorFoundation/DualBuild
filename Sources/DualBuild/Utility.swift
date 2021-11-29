@@ -25,12 +25,13 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
         print("⚠️ path not specified.  Setting default to home directory ⚠️")
     }
     
-    guard let bundlePath = Bundle.main.path(forResource: nil,
-                                            ofType: nil) else {
-        print(#file)
-        print("🛑 Error: couldnt find path to default.json 🛑")
-        return
-    }
+//    guard let bundlePath = Bundle.main.path(forResource: nil,
+//                                            ofType: nil) else {
+//        print(#file)
+//        print("🛑 Error: couldnt find path to default.json 🛑")
+//        return
+//    }
+    let bundlePath = #file.replacingOccurrences(of: "Utility.swift", with: "default.json")
     guard let bundleURL = URL(string: bundlePath) else {
         print("🛑 Error: could not convert DualBuild path to string 🛑")
         return
@@ -107,4 +108,9 @@ func trimWorkingDirectory() -> String? {
         return nil
     }
     return directoryNoSlashes
+}
+
+func getJsonDirectory() -> String {
+    let fileDir = #file
+    let trimmedDir = #file.replacingOccurrences(of: "Utility.swift", with: "default.json")
 }

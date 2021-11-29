@@ -49,18 +49,13 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
 func loadDefaultSettings() -> (String?, String, Bool, Bool){
     var jsonData: Data?
     var decodedJsonData: defaultSettings?
+    let bundlePath = #file.replacingOccurrences(of: "Utility.swift", with: "default.json")
     do {
-            if let bundlePath = Bundle.main.path(forResource: "default",
-                                                 ofType: "json"),
-                let maybeJsonData = try String(contentsOfFile: bundlePath).data(using: .utf8) {
-                jsonData = maybeJsonData
-            }
-                let decodedData = try JSONDecoder().decode(defaultSettings.self,
-                                                           from: jsonData!)
-        
+        let maybeJsonData = try String(contentsOfFile: bundlePath).data(using: .utf8)
+        jsonData = maybeJsonData
+        let decodedData = try JSONDecoder().decode(defaultSettings.self,
+                                                   from: jsonData!)
         decodedJsonData = decodedData
-        
-        
         } catch {
             print(error)
         }
@@ -108,9 +103,4 @@ func trimWorkingDirectory() -> String? {
         return nil
     }
     return directoryNoSlashes
-}
-
-func getJsonDirectory() -> String {
-    let fileDir = #file
-    let trimmedDir = #file.replacingOccurrences(of: "Utility.swift", with: "default.json")
 }

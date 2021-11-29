@@ -23,7 +23,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .executableTarget(
             name: "DualBuild",
-            dependencies: ["Gardener", .product(name: "ArgumentParser", package: "swift-argument-parser")]),
+            dependencies: ["Gardener", .product(name: "ArgumentParser", package: "swift-argument-parser")],
+            resources: [
+                        .process("default.json")]),
         .testTarget(
             name: "DualBuildTests",
             dependencies: ["DualBuild"]),

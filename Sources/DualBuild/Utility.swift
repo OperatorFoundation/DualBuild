@@ -33,7 +33,7 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
     let jsonString = "{\n\"serverIP\": \"\(serverIP)\",\n\"path\": \"\(finalPath)\",\n\"xcode\": \"\(xcode)\",\n\"go\": \"\(go)\"/n}"
     if !File.exists(jsonPath) {
         command.run("mkdir", "\(File.homeDirectory().path)/Documents/DualBuild")
-        command.run("touch", "\(jsonPath)")
+        command.run("touch", "file://\(jsonPath)")
     }
     do {
             try jsonString.write(to: jsonURL,

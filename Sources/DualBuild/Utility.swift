@@ -9,7 +9,7 @@ import Foundation
 import Gardener
 
 struct defaultSettings: Codable {
-    let serverIP: String
+    let serverip: String
     let path: String
     let xcode: Bool
     let go: Bool
@@ -29,7 +29,7 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
         print("🛑 Error: could not convert DualBuild path to string 🛑")
         return
     }
-    let jsonString = "{\n\"serverIP\": \"\(serverIP)\",\n\"path\": \"\(finalPath)\",\n\"xcode\": \"\(xcode)\",\n\"go\": \"\(go)\"\n}"
+    let jsonString = "{\n\"serverip\": \"\(serverIP)\",\n\"path\": \"\(finalPath)\",\n\"xcode\": \(xcode),\n\"go\": \(go)\n}"
     if !File.exists("file://\(jsonPath)") {
         print("creating default.json in ~/Documents/DualBuild/")
         command.run("mkdir", "\(File.homeDirectory().path)/Documents/DualBuild")
@@ -64,8 +64,8 @@ func loadDefaultSettings() -> (String?, String?, Bool, Bool){
         }
     
     var decodedServerIP: String?
-    if decodedJsonData?.serverIP != nil {
-        decodedServerIP = decodedJsonData!.serverIP
+    if decodedJsonData?.serverip != nil {
+        decodedServerIP = decodedJsonData!.serverip
     } else {
         decodedServerIP = nil
         print("🛑 Error: couldn't load serverIP from defaults 🛑")

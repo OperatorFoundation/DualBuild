@@ -36,7 +36,7 @@ public struct DualBuildController {
             return
         }
     var finalPath: String
-        if path != nil || path != "" {
+        if path != nil && path != "" {
             finalPath = "\(path!)/"
         } else {
             finalPath = ""

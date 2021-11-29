@@ -48,8 +48,8 @@ func loadDefaultSettings() -> (String?, String?, Bool, Bool){
     var jsonData: Data?
     var decodedJsonData: defaultSettings?
     let jsonPath = "file://\(File.homeDirectory().path)/Documents/DualBuild/default.json"
-    guard File.exists(jsonPath) else {
-        print("🛑 Error: default.json does not exist. Make sure to run DualBuild with the flag --setdefault 🛑")
+    guard File.exists("file://\(jsonPath)") else {
+        print("🛑 Error: default.json does not exist. Make sure to run DualBuild with the flag -s 🛑")
         return (nil, nil, false, false)
     }
 

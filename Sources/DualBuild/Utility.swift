@@ -31,7 +31,7 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
 //        print("🛑 Error: couldnt find path to default.json 🛑")
 //        return
 //    }
-    let bundlePath = #file.replacingOccurrences(of: "Utility.swift", with: "default.json")
+    let bundlePath = "file://\(#file.replacingOccurrences(of: "Utility.swift", with: "default.json"))"
     guard let bundleURL = URL(string: bundlePath) else {
         print("🛑 Error: could not convert DualBuild path to string 🛑")
         return
@@ -49,7 +49,7 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
 func loadDefaultSettings() -> (String?, String, Bool, Bool){
     var jsonData: Data?
     var decodedJsonData: defaultSettings?
-    let bundlePath = #file.replacingOccurrences(of: "Utility.swift", with: "default.json")
+    let bundlePath = "file://\(#file.replacingOccurrences(of: "Utility.swift", with: "default.json"))"
     do {
         let maybeJsonData = try String(contentsOfFile: bundlePath).data(using: .utf8)
         jsonData = maybeJsonData

@@ -27,6 +27,7 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
     
     guard let bundlePath = Bundle.main.path(forResource: nil,
                                             ofType: nil) else {
+        print(#file)
         print("🛑 Error: couldnt find path to default.json 🛑")
         return
     }

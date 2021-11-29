@@ -16,7 +16,7 @@ struct defaultSettings: Codable {
 }
 
 func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) {
-    
+    let command = Command()
     var finalPath: String
     if path != nil {
         finalPath = path!
@@ -24,21 +24,19 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
         finalPath = File.homeDirectory().path
         print("⚠️ path not specified.  Setting default to home directory ⚠️")
     }
-    
-//    guard let bundlePath = Bundle.main.path(forResource: nil,
-//                                            ofType: nil) else {
-//        print(#file)
-//        print("🛑 Error: couldnt find path to default.json 🛑")
-//        return
-//    }
-    let bundlePath = "file://\(#file.replacingOccurrences(of: "Utility.swift", with: "default.json"))"
-    guard let bundleURL = URL(string: bundlePath) else {
+
+    let jsonPath = "\(File.homeDirectory().path)/Documents/DualBuild/default.json"
+    guard let jsonURL = URL(string: jsonPath) else {
         print("🛑 Error: could not convert DualBuild path to string 🛑")
         return
     }
     let jsonString = "{\n\"serverIP\": \"\(serverIP)\",\n\"path\": \"\(finalPath)\",\n\"xcode\": \"\(xcode)\",\n\"go\": \"\(go)\"/n}"
+    if !File.exists(jsonPath) {
+        command.run("mkdir", "\(File.homeDirectory().path)/Documents/DualBuild")
+        command.run("touch", "\(jsonPath)")
+    }
     do {
-            try jsonString.write(to: bundleURL,
+            try jsonString.write(to: jsonURL,
                                  atomically: true,
                                  encoding: .utf8)
         } catch {
@@ -46,12 +44,17 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
         }
 }
 
-func loadDefaultSettings() -> (String?, String, Bool, Bool){
+func loadDefaultSettings() -> (String?, String?, Bool, Bool){
     var jsonData: Data?
     var decodedJsonData: defaultSettings?
-    let bundlePath = "file://\(#file.replacingOccurrences(of: "Utility.swift", with: "default.json"))"
+    let jsonPath = "\(File.homeDirectory().path)/Documents/DualBuild/default.json"
+    guard File.exists(jsonPath) else {
+        print("🛑 Error: default.json does not exist. Make sure to run DualBuild with the flag --setdefault 🛑")
+        return (nil, nil, false, false)
+    }
+
     do {
-        let maybeJsonData = try String(contentsOfFile: bundlePath).data(using: .utf8)
+        let maybeJsonData = try String(contentsOfFile: jsonPath).data(using: .utf8)
         jsonData = maybeJsonData
         let decodedData = try JSONDecoder().decode(defaultSettings.self,
                                                    from: jsonData!)

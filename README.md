@@ -38,14 +38,14 @@ mint run dualbuild <serverIP>
 
 -p <path>: set path to the project directory on the remote server, EXCLUDING PROJECT NAME(defaults to ~)
 
---xcode: include if you wish to use xcodebuild in favor of swift build
+-x: include if you wish to use xcodebuild in favor of swift build
 
---go: include if you wish to build using the Go programming language
+-g: include if you wish to build using the Go programming language
 
---setdefault: include to set the current settings as the default settings
+-s: include to set the current settings as the default settings. ⚠️ Important notice: this will create /DualBuild in ~/Documents and add the file default.json ⚠️
 
 ##Defaults
-If you run DualBuild with --setdefault, your current flags are saved to a json file and can be used afterwards by using 
+If you run DualBuild with -s, your current flags are saved to a json file and can be used afterwards by using 
 ```
 mint run dualbuild
 ```

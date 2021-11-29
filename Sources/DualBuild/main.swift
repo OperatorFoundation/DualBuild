@@ -17,23 +17,23 @@ struct DualBuild: ParsableCommand
     var install: String?
     @Option(name: .short, help: "(Optional) path to the project directory on the remote server, EXCLUDING PROJECT NAME (defaults to ~)")
     var path: String?
-    @Flag(help: "include if you wish to use xcodebuild in favor of swift build")
+    @Flag(name: .short, help: "include if you wish to use xcodebuild in favor of swift build")
     var xcode = false
-    @Flag(help: "include if you wish to build using the Go programming language")
+    @Flag(name: .short, help: "include if you wish to build using the Go programming language")
     var go = false
-    @Flag(help: "include to set the current settings as the default settings")
-    var setDefault = false
+    @Flag(name: .short, help: "include to set the current settings as the default settings. ⚠️ Important notice: this will create /DualBuild in ~/Documents and add the file default.json ⚠️")
+    var setdefault = false
     
     mutating func run() throws
     {
         // makes sure you dont set an empty default
-        if setDefault && serverIP == nil {
-            print("🛑 error: must at least specify --serverIP to set settings as default 🛑")
+        if setdefault && serverIP == nil {
+            print("🛑 error: must at least specify the remote server IP to set settings as default 🛑")
             return
         }
         
         // sets current settings as default if --setDefault is set
-        if setDefault && serverIP != nil {
+        if setdefault && serverIP != nil {
             print("🛠 setting current settings as default 🛠")
             setDefaultSettings(serverIP: serverIP!, path: path, xcode: xcode, go: go)
         }

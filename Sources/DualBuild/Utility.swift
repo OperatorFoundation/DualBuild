@@ -24,16 +24,22 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
         finalPath = File.homeDirectory().path
         print("⚠️ path not specified.  Setting default to home directory ⚠️")
     }
-
-    let jsonPath = "\(File.homeDirectory().path)/Documents/DualBuild/default.json"
+    print("check 1")
+    let jsonPath = "file://\(File.homeDirectory().path)/Documents/DualBuild/default.json"
+    print("check 2")
     guard let jsonURL = URL(string: jsonPath) else {
         print("🛑 Error: could not convert DualBuild path to string 🛑")
         return
     }
+    print("check 3")
     let jsonString = "{\n\"serverIP\": \"\(serverIP)\",\n\"path\": \"\(finalPath)\",\n\"xcode\": \"\(xcode)\",\n\"go\": \"\(go)\"/n}"
+    print("check 4")
     if !File.exists("file://\(jsonPath)") {
+        print("check 5")
         command.run("mkdir", "\(File.homeDirectory().path)/Documents/DualBuild")
+        print("check 6")
         command.run("touch", "file://\(jsonPath)")
+        print("check 7")
     }
     do {
             try jsonString.write(to: jsonURL,

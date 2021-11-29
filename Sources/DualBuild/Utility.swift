@@ -76,7 +76,7 @@ func loadDefaultSettings() -> (String?, String?, Bool, Bool){
         decodedPath = decodedJsonData!.path
     } else {
         print("⚠️ path default not set.  setting value to home directory ⚠️")
-        decodedPath = File.homeDirectory().path
+        decodedPath = ""
     }
     
     var decodedXcode: Bool

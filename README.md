@@ -38,7 +38,7 @@ mint run dualbuild <serverIP>
 
 -p <path>: set path to the project directory on the remote server, EXCLUDING PROJECT NAME(defaults to ~)
 
--x: include if you wish to use xcodebuild in favor of swift build
+-l: include if you wish to use linux only
 
 -g: include if you wish to build using the Go programming language
 

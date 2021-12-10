@@ -11,11 +11,11 @@ import Gardener
 struct defaultSettings: Codable {
     let serverip: String
     let path: String
-    let xcode: Bool
+    let linux: Bool
     let go: Bool
 }
 
-func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) {
+func setDefaultSettings(serverIP: String, path: String?, linux: Bool, go: Bool) {
     let command = Command()
     var finalPath: String
     if path != nil {
@@ -29,7 +29,7 @@ func setDefaultSettings(serverIP: String, path: String?, xcode: Bool, go: Bool) 
         print("🛑 Error: could not convert DualBuild path to string 🛑")
         return
     }
-    let jsonString = "{\n\"serverip\": \"\(serverIP)\",\n\"path\": \"\(finalPath)\",\n\"xcode\": \(xcode),\n\"go\": \(go)\n}"
+    let jsonString = "{\n\"serverip\": \"\(serverIP)\",\n\"path\": \"\(finalPath)\",\n\"linux\": \(linux),\n\"go\": \(go)\n}"
     if !File.exists("file://\(jsonPath)") {
         print("creating default.json in ~/Documents/DualBuild/")
         command.run("mkdir", "\(File.homeDirectory().path)/Documents/DualBuild")
@@ -79,12 +79,12 @@ func loadDefaultSettings() -> (String?, String?, Bool, Bool){
         decodedPath = ""
     }
     
-    var decodedXcode: Bool
-    if decodedJsonData?.xcode != nil {
-        decodedXcode = decodedJsonData!.xcode
+    var decodedLinux: Bool
+    if decodedJsonData?.linux != nil {
+        decodedLinux = decodedJsonData!.linux
     } else {
-        decodedXcode = false
-        print("⚠️ xcode default not set.  setting value to false ⚠️")
+        decodedLinux = false
+        print("⚠️ linux default not set.  setting value to false ⚠️")
     }
     
     var decodedGo: Bool
@@ -95,7 +95,7 @@ func loadDefaultSettings() -> (String?, String?, Bool, Bool){
         print("⚠️ go default not set.  setting value to false ⚠️")
     }
 
-    return (decodedServerIP, decodedPath, decodedXcode, decodedGo)
+    return (decodedServerIP, decodedPath, decodedLinux, decodedGo)
 }
 
 func trimWorkingDirectory() -> String? {
@@ -107,3 +107,5 @@ func trimWorkingDirectory() -> String? {
     }
     return directoryNoSlashes
 }
+// print(FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first)
+//command.addDefaultPath() (go)

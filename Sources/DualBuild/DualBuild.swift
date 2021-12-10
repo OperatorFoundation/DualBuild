@@ -8,24 +8,21 @@ public struct DualBuildController {
     let git = Git()
     let homeDir = File.homeDirectory().path
     let currentDir = File.currentDirectory()
-    
-    func remoteInstall(url: String, path: String?) {
-        guard let ssh = SSH(username: "root", host: serverIP)
-        else
-        {
-            print("🛑 Error: could not ssh into packet capture server 🛑")
+        
+    func swiftBuildMacOS() {
+        // exitcode: returns a number, data: stdout, error: stderr
+        guard let (exitCode, data, error) = command.run("swift", "build") else {
+            print("Error: Swift build failed")
             return
         }
-        
-        if path != nil {
-            ssh.remote(command: "cd \(path!); git clone \(url)")
-        } else {
-            ssh.remote(command: "git clone \(url)")
+        guard exitCode != 0 else {
+            print("exit code: \(exitCode)")
+            return
         }
-    }
-    
-    func swiftBuildMacOS() {
-        command.run("swift", "build")
+        print(data.string)
+        if error.count > 0 {
+            print(error.string)
+        }
     }
     
     func swiftBuildLinux(path: String?) {
@@ -45,7 +42,7 @@ public struct DualBuildController {
             print("🛑 Error: could not trim working directory 🛑")
             return
         }
-        ssh.remote(command: "cd \(finalPath)\(current); export PATH=\"/root/swift/usr/bin:$PATH\"; swift build")
+        ssh.remote(command: "cd \(finalPath)DualBuild/\(current); export PATH=\"/root/swift/usr/bin:$PATH\"; swift build")
     }
     
     func goBuildMacOS() {
@@ -69,30 +66,27 @@ public struct DualBuildController {
             print("🛑 Error: could not trim working directory 🛑")
             return
         }
-        ssh.remote(command: "cd \(finalPath)\(current); go build")
+        ssh.remote(command: "cd \(finalPath)DualBuild/\(current); go build")
     }
     
-    func xcodeBuildMacOS() {
-        command.run("xcodebuild")
-    }
-    
-    func xcodeBuildLinux(path: String?) {
+    func linuxTransfer(path: String?, serverIP: String) {
         guard let ssh = SSH(username: "root", host: serverIP)
         else
         {
             print("🛑 Error: could not ssh into packet capture server 🛑")
             return
         }
-    var finalPath: String
-        if path != nil {
-            finalPath = "\(path!)/"
-        } else {
-            finalPath = ""
-        }
-        guard let current = trimWorkingDirectory() else {
-            print("🛑 Error: could not trim working directory 🛑")
-            return
-        }
-        ssh.remote(command: "cd \(finalPath)\(current); xcodebuild")
+        //get the path
+        var finalPath: String
+            if path != nil {
+                finalPath = "\(path!)/"
+            } else {
+                finalPath = ""
+            }
+        // take the path and append a DualBuild directory
+        print("verifying DualBuild directory on remote server")
+        ssh.remote(command: "cd \(finalPath); mkdir DualBuild")
+        // scp the contents of current directory into the new path
+        command.run("scp", "-r \(currentDir) root@\(serverIP):\(finalPath)")
     }
 }

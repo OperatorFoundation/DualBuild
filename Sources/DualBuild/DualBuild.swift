@@ -87,6 +87,6 @@ public struct DualBuildController {
         print("verifying DualBuild directory on remote server")
         ssh.remote(command: "cd \(finalPath); mkdir DualBuild")
         // scp the contents of current directory into the new path
-        command.run("scp", "-r \(currentDir) root@\(serverIP):\(finalPath)")
+        command.run("scp", "-r \(currentDir) root@\(serverIP):\(finalPath)/DualBuild/")
     }
 }

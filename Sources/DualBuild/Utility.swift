@@ -21,7 +21,7 @@ func setDefaultSettings(serverIP: String, path: String?, linux: Bool, go: Bool) 
     if path != nil {
         finalPath = path!
     } else {
-        finalPath = File.homeDirectory().path
+        finalPath = ""
         print("⚠️ path not specified.  Setting default to home directory ⚠️")
     }
     let jsonPath = "file://\(File.homeDirectory().path)/Documents/DualBuild/default.json"

@@ -56,7 +56,8 @@ public struct DualBuildController {
             print("🛑 Error: could not ssh into linux server 🛑")
             return
         }
-    var finalPath: String
+        ssh.goVersion()
+        var finalPath: String
         if path != nil {
             finalPath = "\(path!)/"
         } else {
@@ -88,6 +89,6 @@ public struct DualBuildController {
         print("verifying DualBuild directory on remote server")
         ssh.remote(command: "cd \(finalPath); mkdir DualBuild")
         // scp the contents of current directory into the new path
-        command.run("scp", "-r [!.]* \(currentDir) root@\(serverIP):\(finalPath)/DualBuild/")
+        command.run("rsync", "-a \(currentDir) root@\(serverIP):\(finalPath)/DualBuild/")
     }
 }

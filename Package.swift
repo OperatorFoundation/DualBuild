@@ -16,7 +16,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "0.5.0"),
-        .package(url: "https://github.com/OperatorFoundation/Gardener.git", from:"0.0.48"),
+        .package(url: "https://github.com/OperatorFoundation/Gardener.git", from:"0.0.49"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.

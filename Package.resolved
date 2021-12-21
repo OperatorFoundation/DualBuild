@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/OperatorFoundation/Gardener.git",
         "state": {
           "branch": null,
-          "revision": "5ea0d149e8b10f5d7802efe2cfb8fbd9eeeb2c22",
-          "version": "0.0.48"
+          "revision": "780bad665f5151de942a6b83a57080ef68f34013",
+          "version": "0.0.49"
         }
       },
       {

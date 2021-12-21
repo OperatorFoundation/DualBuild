@@ -107,5 +107,3 @@ func trimWorkingDirectory() -> String? {
     }
     return directoryNoSlashes
 }
-// print(FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first)
-//command.addDefaultPath() (go)

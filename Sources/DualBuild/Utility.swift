@@ -22,7 +22,7 @@ func setDefaultSettings(serverIP: String, path: String?, linux: Bool, go: Bool) 
         finalPath = path!
     } else {
         finalPath = ""
-        print("⚠️ path not specified.  Setting default to home directory ⚠️")
+        print("\n\n🛠 path not specified.  Setting default to home directory 🛠\n\n")
     }
     let jsonPath = "file://\(File.homeDirectory().path)/Documents/DualBuild/default.json"
     guard let jsonURL = URL(string: jsonPath) else {
@@ -31,9 +31,32 @@ func setDefaultSettings(serverIP: String, path: String?, linux: Bool, go: Bool) 
     }
     let jsonString = "{\n\"serverip\": \"\(serverIP)\",\n\"path\": \"\(finalPath)\",\n\"linux\": \(linux),\n\"go\": \(go)\n}"
     if !File.exists("file://\(jsonPath)") {
-        print("creating default.json in ~/Documents/DualBuild/")
-        command.run("mkdir", "\(File.homeDirectory().path)/Documents/DualBuild")
-        command.run("touch", "file://\(jsonPath)")
+        print("\n\n🛠 creating default.json in ~/Documents/DualBuild/ 🛠\n\n")
+        guard let (exitCode, data, error) = command.run("mkdir", "\(File.homeDirectory().path)/Documents/DualBuild") else {
+            print("🛑 Error: Gardener command failed to execute 🛑")
+            return
+        }
+        print(data.string)
+        guard exitCode == 0 else {
+            print("exit code: \(exitCode)")
+            if error.count > 0 {
+                print(error.string)
+            }
+            return
+        }
+        
+        guard let (exitCode2, data2, error2) = command.run("touch", "file://\(jsonPath)") else {
+            print("🛑 Error: Gardener command failed to execute 🛑")
+            return
+        }
+        print(data2.string)
+        guard exitCode2 != 0 else {
+            print("exit code: \(exitCode2)")
+            if error2.count > 0 {
+                print(error2.string)
+            }
+            return
+        }
     }
     do {
             try jsonString.write(to: jsonURL,
@@ -75,7 +98,7 @@ func loadDefaultSettings() -> (String?, String?, Bool, Bool){
     if decodedJsonData?.path != nil {
         decodedPath = decodedJsonData!.path
     } else {
-        print("⚠️ path default not set.  setting value to home directory ⚠️")
+        print("\n\n🛠 path default not set.  setting value to home directory 🛠\n\n")
         decodedPath = ""
     }
     
@@ -84,7 +107,7 @@ func loadDefaultSettings() -> (String?, String?, Bool, Bool){
         decodedLinux = decodedJsonData!.linux
     } else {
         decodedLinux = false
-        print("⚠️ linux default not set.  setting value to false ⚠️")
+        print("\n\n🛠 linux default not set.  setting value to false 🛠\n\n")
     }
     
     var decodedGo: Bool
@@ -92,7 +115,7 @@ func loadDefaultSettings() -> (String?, String?, Bool, Bool){
         decodedGo = decodedJsonData!.go
     } else {
         decodedGo = false
-        print("⚠️ go default not set.  setting value to false ⚠️")
+        print("\n\n🛠 go default not set.  setting value to false 🛠\n\n")
     }
 
     return (decodedServerIP, decodedPath, decodedLinux, decodedGo)

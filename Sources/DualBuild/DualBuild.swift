@@ -165,7 +165,7 @@ public struct DualBuildController {
         }
         
         // rsync the contents of current directory into the new path
-        guard let (exitCode4, data4, error4) = command.run("rsync", "-a \(currentDir) root@\(serverIP):\(finalPath)/DualBuild/") else {
+        guard let (exitCode4, data4, error4) = command.run("rsync", "-a ", "\(currentDir)", "root@\(serverIP):\(finalPath)/DualBuild/") else {
             print("🛑 Error: Gardener command failed to execute 🛑")
             return
         }
